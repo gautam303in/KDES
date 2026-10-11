@@ -30,15 +30,15 @@ const server = http.createServer((req, res) => {
     let body = '';
     req.on('data', chunk => { body += chunk; });
     req.on('end', () => {
-      console.log(`[sendmail.php] Form details forwarded to: kdes2017@gmail.com`);
+      console.log(`[sendmail.php] Form details forwarded to: shiven.k@aol.in`);
       const isJson = (req.headers.accept && req.headers.accept.includes('application/json')) ||
                      (req.headers['x-requested-with'] && req.headers['x-requested-with'].toLowerCase() === 'xmlhttprequest');
       if (isJson) {
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({
           status: 'success',
-          message: 'Thank you! Your details have been sent to kdes2017@gmail.com. Our engineering team will contact you promptly.',
-          recipient: 'kdes2017@gmail.com'
+          message: 'Thank you! Your details have been sent to shiven.k@aol.in. Our engineering team will contact you promptly.',
+          recipient: 'shiven.k@aol.in'
         }));
       } else {
         const referer = req.headers.referer || '/';

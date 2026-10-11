@@ -276,14 +276,14 @@ test('product dropdown with all 25 models should exist across contact us form, r
   assert.strictEqual(css.includes('[data-theme="dark"] .quote-form-card select optgroup'), true, 'CSS must style optgroup in dark mode');
 });
 
-test('email handler sendmail.php and all three submission forms should forward details to kdes2017@gmail.com', () => {
+test('email handler sendmail.php and all three submission forms should forward details to shiven.k@aol.in', () => {
   const kdesDir = path.join(rootDir, 'kdes.in');
 
-  // 1. sendmail.php must exist and be configured for kdes2017@gmail.com
+  // 1. sendmail.php must exist and be configured for shiven.k@aol.in
   const phpPath = path.join(kdesDir, 'sendmail.php');
   assert.strictEqual(fs.existsSync(phpPath), true, 'kdes.in/sendmail.php must exist');
   const phpContent = fs.readFileSync(phpPath, 'utf8');
-  assert.strictEqual(phpContent.includes('kdes2017@gmail.com'), true, 'sendmail.php recipient must be kdes2017@gmail.com');
+  assert.strictEqual(phpContent.includes('shiven.k@aol.in'), true, 'sendmail.php recipient must be shiven.k@aol.in');
   assert.strictEqual(phpContent.includes('fname'), true, 'sendmail.php must handle fname');
   assert.strictEqual(phpContent.includes('lname'), true, 'sendmail.php must handle lname');
   assert.strictEqual(phpContent.includes('email'), true, 'sendmail.php must handle email');
@@ -297,14 +297,14 @@ test('email handler sendmail.php and all three submission forms should forward d
   const handlerJsPath = path.join(kdesDir, 'js', 'form-handler.js');
   assert.strictEqual(fs.existsSync(handlerJsPath), true, 'js/form-handler.js must exist');
   const handlerContent = fs.readFileSync(handlerJsPath, 'utf8');
-  assert.strictEqual(handlerContent.includes('kdes2017@gmail.com'), true, 'form-handler.js must target kdes2017@gmail.com');
+  assert.strictEqual(handlerContent.includes('shiven.k@aol.in'), true, 'form-handler.js must target shiven.k@aol.in');
 
   // 3. Form 1: "Send Message Now" on contact.html
   const contactPath = path.join(kdesDir, 'contact.html');
   const contactContent = fs.readFileSync(contactPath, 'utf8');
   assert.strictEqual(contactContent.includes('Send Message Now'), true, 'contact.html must have "Send Message Now" button');
   assert.strictEqual(contactContent.includes('action="sendmail.php"'), true, 'contact.html must post to sendmail.php');
-  assert.strictEqual(contactContent.includes('name="to_email" value="kdes2017@gmail.com"'), true, 'contact.html must include to_email hidden input');
+  assert.strictEqual(contactContent.includes('name="to_email" value="shiven.k@aol.in"'), true, 'contact.html must include to_email hidden input');
   assert.strictEqual(contactContent.includes('name="fname"'), true, 'contact.html must include fname');
   assert.strictEqual(contactContent.includes('name="lname"'), true, 'contact.html must include lname');
   assert.strictEqual(contactContent.includes('name="email"'), true, 'contact.html must include email');
@@ -319,7 +319,7 @@ test('email handler sendmail.php and all three submission forms should forward d
   const indexContent = fs.readFileSync(indexPath, 'utf8');
   assert.strictEqual(indexContent.includes('Submit Request'), true, 'index.html must have "Submit Request" button');
   assert.strictEqual(indexContent.includes('action="sendmail.php"'), true, 'index.html must post to sendmail.php');
-  assert.strictEqual(indexContent.includes('name="to_email" value="kdes2017@gmail.com"'), true, 'index.html must include to_email hidden input');
+  assert.strictEqual(indexContent.includes('name="to_email" value="shiven.k@aol.in"'), true, 'index.html must include to_email hidden input');
   assert.strictEqual(indexContent.includes('name="fname"'), true, 'index.html must include fname');
   assert.strictEqual(indexContent.includes('name="lname"'), true, 'index.html must include lname');
   assert.strictEqual(indexContent.includes('name="email"'), true, 'index.html must include email');
@@ -340,7 +340,7 @@ test('email handler sendmail.php and all three submission forms should forward d
       `${f} must have "Submit Specification & Request Quote" button`
     );
     assert.strictEqual(detailContent.includes('action="sendmail.php"'), true, `${f} must post to sendmail.php`);
-    assert.strictEqual(detailContent.includes('name="to_email" value="kdes2017@gmail.com"'), true, `${f} must include to_email hidden input`);
+    assert.strictEqual(detailContent.includes('name="to_email" value="shiven.k@aol.in"'), true, `${f} must include to_email hidden input`);
     assert.strictEqual(detailContent.includes('name="fname"'), true, `${f} must include fname`);
     assert.strictEqual(detailContent.includes('name="lname"'), true, `${f} must include lname`);
     assert.strictEqual(detailContent.includes('name="email"'), true, `${f} must include email`);

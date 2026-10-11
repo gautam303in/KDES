@@ -1,6 +1,6 @@
 /**
  * K D Engineering Solutions - Form Submission Handler
- * Target Recipient: kdes2017@gmail.com
+ * Target Recipient: shiven.k@aol.in
  * Handles:
  * 1. "Send Message Now" (contact.html)
  * 2. "Submit Request" (index.html#quote)
@@ -10,7 +10,7 @@
 (function () {
     'use strict';
 
-    var TARGET_EMAIL = 'kdes2017@gmail.com';
+    var TARGET_EMAIL = 'shiven.k@aol.in';
 
     document.addEventListener('DOMContentLoaded', function () {
         var forms = document.querySelectorAll('.quote-form-card, form[action*="sendmail.php"]');

@@ -1,13 +1,13 @@
 <?php
 /**
  * K D Engineering Solutions - Enquiry & Quote Email Handler
- * Recipient: kdes2017@gmail.com
+ * Recipient: shiven.k@aol.in
  */
 
 header('X-Content-Type-Options: nosniff');
 
 // Target recipient
-$recipient = 'kdes2017@gmail.com';
+$recipient = 'shiven.k@aol.in';
 
 // Verify POST request
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
