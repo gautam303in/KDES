@@ -1,0 +1,19 @@
+{
+  "name": "kdes-website",
+  "version": "1.0.0",
+  "description": "KDES website static assets and pages",
+  "main": "index.html",
+  "scripts": {
+    "dev": "node ./scripts/serve.js",
+    "start": "node ./scripts/serve.js",
+    "build": "node ./scripts/build.js",
+    "lint": "node ./scripts/lint.js",
+    "test": "node --test ./test/**/*.test.js"
+  },
+  "keywords": [
+    "kdes",
+    "website"
+  ],
+  "author": "",
+  "license": "ISC"
+}
