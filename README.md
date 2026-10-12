@@ -25,7 +25,7 @@ The platform features a modern, responsive design system with dark/light mode to
   - Detailed parameter tables, operational ranges, compliance standards, and application notes.
   - Dedicated specifications inquiry forms on every detail page.
 - **Unified Quotation & Inquiry Forwarding**:
-  - All inquiries from the three forms are mapped to forward to **`shiven.k@aol.in`**:
+  - All inquiries from the three forms are mapped to forward to **`kdes2017@gmail.com`**:
     1. **"Send Message Now"** on [`kdes.in/contact.html`](file:///d:/Projects/Repos/Websites/KDES/KDES/kdes.in/contact.html)
     2. **"Submit Request"** on [`kdes.in/index.html#quote`](file:///d:/Projects/Repos/Websites/KDES/KDES/kdes.in/index.html#quote)
     3. **"Submit Specification & Request Quote"** across all 25 [`product-details*.html`](file:///d:/Projects/Repos/Websites/KDES/KDES/kdes.in/) pages
