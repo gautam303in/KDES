@@ -2165,9 +2165,8 @@ select:focus {
 
 /* Form Inputs, Select & Dropdowns in Dark Mode */
 [data-theme="dark"] .quote-form-card input,
-[data-theme="dark"] .quote-form-card textarea,
-[data-theme="dark"] .quote-form-card select {
-  background: #08150e !important;
+[data-theme="dark"] .quote-form-card textarea {
+  background-color: #08150e !important;
   border-color: rgba(255, 255, 255, 0.14) !important;
   color: #f1f5f9 !important;
 }
@@ -2177,27 +2176,54 @@ select:focus {
   color: rgba(203, 213, 225, 0.5) !important;
 }
 
-[data-theme="dark"] .quote-form-card select {
+[data-theme="dark"] .quote-form-card select,
+[data-theme="dark"] select.ae-form-select,
+[data-theme="dark"] select {
+  background-color: #08150e !important;
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #f1f5f9 !important;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2386efac' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  background-size: 16px 16px !important;
+  padding-right: 44px !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  cursor: pointer;
 }
 
-[data-theme="dark"] .quote-form-card select optgroup {
-  background: #0d2417 !important;
+[data-theme="dark"] .quote-form-card select optgroup,
+[data-theme="dark"] select optgroup {
+  background-color: #0d281a !important;
   color: #86efac !important;
   font-weight: 700;
+  padding: 8px 12px;
 }
 
-[data-theme="dark"] .quote-form-card select option {
-  background: #08150e !important;
+[data-theme="dark"] .quote-form-card select option,
+[data-theme="dark"] select option {
+  background-color: #08150e !important;
   color: #f1f5f9 !important;
+  padding: 8px 14px;
 }
 
 [data-theme="dark"] .quote-form-card input:focus,
-[data-theme="dark"] .quote-form-card textarea:focus,
-[data-theme="dark"] .quote-form-card select:focus {
+[data-theme="dark"] .quote-form-card textarea:focus {
   border-color: var(--ae-lime) !important;
-  background: #0c2014 !important;
+  background-color: #0c2014 !important;
   box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.18) !important;
+}
+
+[data-theme="dark"] .quote-form-card select:focus,
+[data-theme="dark"] select.ae-form-select:focus,
+[data-theme="dark"] select:focus {
+  border-color: var(--ae-lime) !important;
+  background-color: #0c2014 !important;
+  box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.18) !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  background-size: 16px 16px !important;
 }
 
 [data-theme="dark"] .aeline-prod-card:hover,
@@ -2349,15 +2375,13 @@ select:focus {
 
 /* Form Inputs in Dark Mode */
 [data-theme="dark"] input,
-[data-theme="dark"] select,
 [data-theme="dark"] textarea {
-  background: #08140e !important;
+  background-color: #08140e !important;
   color: #f8fafc !important;
   border: 1px solid rgba(255, 255, 255, 0.14) !important;
 }
 
 [data-theme="dark"] input:focus,
-[data-theme="dark"] select:focus,
 [data-theme="dark"] textarea:focus {
   border-color: var(--ae-lime) !important;
   box-shadow: 0 0 0 3px rgba(74, 222, 128, 0.2) !important;
