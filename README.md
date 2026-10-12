@@ -32,11 +32,13 @@ The platform features a modern, responsive design system with dark/light mode to
 - **Robust Email Dispatcher ([`kdes.in/sendmail.php`](file:///d:/Projects/Repos/Websites/KDES/KDES/kdes.in/sendmail.php))**:
   - RFC-compliant `multipart/alternative` MIME emails (clean plain-text + styled HTML table).
   - Anti-spam envelope sender fallbacks (`-f` flag) for AOL/Yahoo/Gmail deliverability.
-  - Automatic JSON persistence logging to `inquiries_backup.json`.
-- **Client-Side Form Handling ([`kdes.in/js/form-handler.js`](file:///d:/Projects/Repos/Websites/KDES/KDES/kdes.in/js/form-handler.js))**:
-  - Asynchronous AJAX submission with loading indicators.
-  - Animated modal popup displaying mapped recipient verification.
-  - Automatic one-click `mailto:shiven.k@aol.in` fallback if the server is offline or unreachable.
+- **Cybersecurity & Anti-Cloning Safeguards**:
+  - **HTTP Security Headers** (`.htaccess` & server config): `X-Frame-Options: SAMEORIGIN`, `X-Content-Type-Options: nosniff`, `Content-Security-Policy` (CSP), `Referrer-Policy: strict-origin-when-cross-origin`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`.
+  - **Anti-Cloning & Scraper Shield**: Blocks automated website scrapers (HTTrack, Scrapy, Wget, WebCopier, Offline Explorer) and restricts unauthorized AI training crawlers (`robots.txt`).
+  - **Image Hotlink Protection**: Prevents third-party domains from leeching bandwidth and scraping product media.
+  - **Client-Side Guard ([`kdes.in/js/kdes-security.js`](file:///d:/Projects/Repos/Websites/KDES/KDES/kdes.in/js/kdes-security.js))**: Frame-busting anti-clickjacking defense, asset drag deterrent, external link referrer sanitization (`noopener noreferrer`), and tamper-evident brand integrity seal (`window.__KDES_SECURITY__`).
+  - **Backend Hardening ([`kdes.in/sendmail.php`](file:///d:/Projects/Repos/Websites/KDES/KDES/kdes.in/sendmail.php))**: Invisible bot-trap honeypot (`_kdes_security_hp`), client IP rate-limiting (max 6 inquiries/3 mins), input length boundary clamping, and email header injection neutralization.
+  - **Directory & Log Lockdown**: Directory indexing disabled (`Options -Indexes`) and public access to `inquiries_backup.json`, `*.log`, `*.env` denied (`403 Forbidden`).
 
 ---
 

@@ -1,0 +1,39 @@
+# ==============================================================================
+# K D Engineering Solutions (kdes.in) - Robots & Crawler Governance
+# ==============================================================================
+
+# 1. Allow legitimate search engine indexers
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: Slurp
+User-agent: DuckDuckBot
+Allow: /
+Disallow: /sendmail.php
+Disallow: /inquiries_backup.json
+Disallow: /*.json$
+Disallow: /*.log$
+
+# 2. Block AI training scrapers & unauthorized mass scrapers from bulk harvesting
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: Bytespider
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: cohere-ai
+User-agent: ImagesiftBot
+User-agent: PetalBot
+User-agent: Scrapy
+User-agent: HTTrack
+Disallow: /
+
+# 3. Default Crawl Directives
+User-agent: *
+Allow: /
+Disallow: /sendmail.php
+Disallow: /inquiries_backup.json
+Disallow: /*.json$
+Disallow: /*.log$
+
+# Sitemap declaration
+Sitemap: https://kdes.in/sitemap.xml

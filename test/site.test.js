@@ -352,6 +352,51 @@ test('email handler sendmail.php and all three submission forms should forward d
   }
 });
 
+test('website should be cybersecurity compliant and anti-cloning restricted', () => {
+  const kdesDir = path.join(rootDir, 'kdes.in');
+  
+  // 1. Verify .htaccess configuration
+  const htaccessPath = path.join(kdesDir, '.htaccess');
+  assert.strictEqual(fs.existsSync(htaccessPath), true, '.htaccess must exist in kdes.in');
+  const htaccessContent = fs.readFileSync(htaccessPath, 'utf8');
+  assert.strictEqual(htaccessContent.includes('X-Frame-Options "SAMEORIGIN"'), true, 'Must enforce X-Frame-Options');
+  assert.strictEqual(htaccessContent.includes('X-Content-Type-Options "nosniff"'), true, 'Must enforce X-Content-Type-Options');
+  assert.strictEqual(htaccessContent.includes('Content-Security-Policy'), true, 'Must enforce Content-Security-Policy');
+  assert.strictEqual(htaccessContent.includes('HTTrack') && htaccessContent.includes('Scrapy'), true, 'Must block automated website cloners');
+  assert.strictEqual(htaccessContent.includes('Options -Indexes'), true, 'Must disable directory browsing');
+  assert.strictEqual(htaccessContent.includes('inquiries_backup'), true, 'Must deny access to inquiries_backup.json');
+
+  // 2. Verify robots.txt crawler governance
+  const robotsPath = path.join(kdesDir, 'robots.txt');
+  assert.strictEqual(fs.existsSync(robotsPath), true, 'robots.txt must exist in kdes.in');
+  const robotsContent = fs.readFileSync(robotsPath, 'utf8');
+  assert.strictEqual(robotsContent.includes('GPTBot') && robotsContent.includes('CCBot'), true, 'Must disallow AI mass-scrapers');
+  assert.strictEqual(robotsContent.includes('Disallow: /sendmail.php'), true, 'Must protect sendmail endpoint from crawlers');
+
+  // 3. Verify client-side security guard
+  const secJsPath = path.join(kdesDir, 'js', 'kdes-security.js');
+  assert.strictEqual(fs.existsSync(secJsPath), true, 'kdes-security.js must exist');
+  const secJsContent = fs.readFileSync(secJsPath, 'utf8');
+  assert.strictEqual(secJsContent.includes('window.top !== window.self'), true, 'Must contain frame-busting anti-clickjacking guard');
+  assert.strictEqual(secJsContent.includes('_kdes_security_hp'), true, 'Must inject honeypot protection');
+  assert.strictEqual(secJsContent.includes('__KDES_SECURITY__'), true, 'Must contain tamper-evident security seal');
+
+  // 4. Verify backend honeypot & rate-limiting in sendmail.php
+  const sendmailContent = fs.readFileSync(path.join(kdesDir, 'sendmail.php'), 'utf8');
+  assert.strictEqual(sendmailContent.includes('_kdes_security_hp'), true, 'sendmail.php must verify honeypot field');
+  assert.strictEqual(sendmailContent.includes('kdes_rate_'), true, 'sendmail.php must enforce IP rate-limiting');
+  assert.strictEqual(sendmailContent.includes('mb_substr'), true, 'sendmail.php must enforce input length boundaries');
+
+  // 5. Verify security meta tags and kdes-security.js in main pages
+  const corePages = ['index.html', 'about.html', 'contact.html', 'catalogue.html'];
+  for (const page of corePages) {
+    const pageContent = fs.readFileSync(path.join(kdesDir, page), 'utf8');
+    assert.strictEqual(pageContent.includes('http-equiv="X-Frame-Options"'), true, `${page} must contain X-Frame-Options meta tag`);
+    assert.strictEqual(pageContent.includes('http-equiv="X-Content-Type-Options"'), true, `${page} must contain X-Content-Type-Options meta tag`);
+    assert.strictEqual(pageContent.includes('js/kdes-security.js'), true, `${page} must load kdes-security.js`);
+  }
+});
+
 
 
 

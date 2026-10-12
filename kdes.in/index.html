@@ -10,6 +10,9 @@
     <meta name="keywords"
         content="KD Engineering Solutions, Lab Instruments, Piezometer, Ground Water Level Recorder, Stack Sampler, Delhi, Maujpur, Meet Nagar">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <link rel="shortcut icon" type="image/x-icon" href="header-image/1615271827_1615197139_mainlogo.png">
 
     <!-- Fonts & Icons -->
@@ -989,6 +992,9 @@
                     <form action="sendmail.php" method="POST" class="quote-form-card">
                         <input type="hidden" name="to_email" value="shiven.k@aol.in">
                         <input type="hidden" name="form_type" value="Homepage Quote Request (Submit Request)">
+                        <div style="display:none!important;position:absolute!important;left:-9999px!important" aria-hidden="true">
+                            <input type="text" name="_kdes_security_hp" tabindex="-1" autocomplete="off" value="">
+                        </div>
                         <h3 style="margin-bottom:8px">Submit Your Specification</h3>
                         <p style="font-size:14px;color:var(--ae-text-muted);margin-bottom:12px">An application engineer
                             will review and respond with comprehensive pricing and parameters.</p>
@@ -1376,6 +1382,7 @@
         })();
     </script>
     <script src="js/form-handler.js"></script>
+    <script src="js/kdes-security.js"></script>
 </body>
 
 </html>

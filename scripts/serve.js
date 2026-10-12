@@ -22,13 +22,41 @@ const MIME_TYPES = {
   '.eot': 'application/vnd.ms-fontobject'
 };
 
+const SECURITY_HEADERS = {
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'SAMEORIGIN',
+  'X-XSS-Protection': '1; mode=block',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+  'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+  'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+  'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self'; frame-src 'self' https://www.google.com https://maps.google.com; object-src 'none'; base-uri 'self'; form-action 'self' sendmail.php; frame-ancestors 'self';"
+};
+
+const BLOCKED_SCRAPERS = /HTTrack|Wget|Scrapy|WebCopier|Teleport|Offline\s+Explorer|EmailCollector|SiteSnagger|WebZip|WebReaper|SuperBot|Mirror/i;
+
 const server = http.createServer((req, res) => {
+  // 1. Anti-Cloning & Scraper Shield Check
+  const userAgent = req.headers['user-agent'] || '';
+  if (BLOCKED_SCRAPERS.test(userAgent)) {
+    res.writeHead(403, { 'Content-Type': 'text/plain', ...SECURITY_HEADERS });
+    res.end('403 Forbidden: Automated website scraper or cloner detected and restricted.');
+    return;
+  }
+
   let reqPath = decodeURI(req.url.split('?')[0]);
   if (reqPath.startsWith('/kdes.in')) {
     reqPath = reqPath.replace(/^\/kdes\.in/, '') || '/';
   }
 
-  // Handle POST submission to sendmail.php in local dev server
+  // 2. Block direct HTTP access to inquiries_backup.json and sensitive files
+  if (reqPath === '/inquiries_backup.json' || reqPath.endsWith('.log') || reqPath.endsWith('.env')) {
+    res.writeHead(403, { 'Content-Type': 'text/plain', ...SECURITY_HEADERS });
+    res.end('403 Forbidden: Access to protected security logs is restricted.');
+    return;
+  }
+
+  // 3. Handle POST submission to sendmail.php in local dev server
   if (req.method === 'POST' && (reqPath === '/sendmail.php' || reqPath === 'sendmail.php' || reqPath.endsWith('sendmail.php'))) {
     let body = '';
     req.on('data', chunk => { body += chunk; });
@@ -42,6 +70,14 @@ const server = http.createServer((req, res) => {
         }
       } catch (e) {
         // Fallback simple parsing
+      }
+
+      // Honeypot bot trap detection
+      if (parsedData._kdes_security_hp || parsedData.website_url_hp) {
+        console.log(`[sendmail.php] 🛡️ HONEYPOT TRIGGERED: Bot submission rejected silently.`);
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', ...SECURITY_HEADERS });
+        res.end(JSON.stringify({ status: 'success', message: 'Inquiry received.', recipient: 'shiven.k@aol.in' }));
+        return;
       }
 
       const recipient = parsedData.to_email || parsedData.recipient || 'shiven.k@aol.in';
@@ -93,7 +129,7 @@ const server = http.createServer((req, res) => {
       const isJson = (req.headers.accept && req.headers.accept.includes('application/json')) ||
                      (req.headers['x-requested-with'] && req.headers['x-requested-with'].toLowerCase() === 'xmlhttprequest');
       if (isJson) {
-        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+        res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', ...SECURITY_HEADERS });
         res.end(JSON.stringify({
           status: 'success',
           message: `Thank you! Your details have been successfully forwarded to ${recipient}. Our engineering team will review and contact you promptly.`,
@@ -104,7 +140,7 @@ const server = http.createServer((req, res) => {
         }));
       } else {
         const referer = req.headers.referer || '/';
-        res.writeHead(302, { 'Location': referer + (referer.includes('?') ? '&' : '?') + 'status=success' });
+        res.writeHead(302, { 'Location': referer + (referer.includes('?') ? '&' : '?') + 'status=success', ...SECURITY_HEADERS });
         res.end();
       }
     });
@@ -123,10 +159,10 @@ const server = http.createServer((req, res) => {
 
   fs.readFile(filePath, (err, content) => {
     if (err) {
-      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.writeHead(500, { 'Content-Type': 'text/plain', ...SECURITY_HEADERS });
       res.end(`500 Server Error: ${err.message}`);
     } else {
-      res.writeHead(200, { 'Content-Type': contentType });
+      res.writeHead(200, { 'Content-Type': contentType, ...SECURITY_HEADERS });
       res.end(content);
     }
   });

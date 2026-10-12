@@ -9,9 +9,8 @@
  */
 
 header('X-Content-Type-Options: nosniff');
-
-// Default mapped recipient email
-$defaultMappedEmail = 'shiven.k@aol.in';
+header('X-Frame-Options: SAMEORIGIN');
+header('Referrer-Policy: strict-origin-when-cross-origin');
 
 // Check if request is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -20,25 +19,88 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// Helper to sanitize single-line text
-function clean_input($data) {
+// 1. Anti-Bot Honeypot Defense
+if (!empty($_POST['_kdes_security_hp']) || !empty($_POST['website_url_hp'])) {
+    // Automated bot detected: return simulated success and drop payload
+    $isJson = (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) ||
+              (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+    if ($isJson) {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(array(
+            'status' => 'success',
+            'message' => 'Thank you! Your details have been forwarded.',
+            'recipient' => 'shiven.k@aol.in'
+        ));
+    } else {
+        header('Location: contact.html?status=success');
+    }
+    exit;
+}
+
+// 2. IP Rate Limiting (Flood & Mail-Bombing Prevention)
+$clientIp = !empty($_SERVER['HTTP_X_FORWARDED_FOR']) ? explode(',', $_SERVER['HTTP_X_FORWARDED_FOR'])[0] : (!empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '127.0.0.1');
+$clientIp = trim(filter_var($clientIp, FILTER_VALIDATE_IP) ? $clientIp : '127.0.0.1');
+$rateLimitFile = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'kdes_rate_' . md5($clientIp) . '.json';
+$now = time();
+$ipHistory = array();
+
+if (file_exists($rateLimitFile)) {
+    $rawHistory = @file_get_contents($rateLimitFile);
+    if ($rawHistory) {
+        $decoded = @json_decode($rawHistory, true);
+        if (is_array($decoded)) {
+            // Keep entries within last 180 seconds (3 minutes)
+            foreach ($decoded as $ts) {
+                if ($now - $ts < 180) {
+                    $ipHistory[] = $ts;
+                }
+            }
+        }
+    }
+}
+
+// Max 6 requests per 3 minutes per IP
+if (count($ipHistory) >= 6) {
+    http_response_code(429);
+    $isJson = (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false) ||
+              (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
+    if ($isJson) {
+        header('Content-Type: application/json; charset=utf-8');
+        echo json_encode(array(
+            'status' => 'error',
+            'message' => 'Too many requests. Please wait a few minutes before submitting another inquiry.'
+        ));
+    } else {
+        echo "Too many requests. Please wait a few minutes before trying again.";
+    }
+    exit;
+}
+
+$ipHistory[] = $now;
+@file_put_contents($rateLimitFile, json_encode($ipHistory), LOCK_EX);
+
+// Helper to sanitize and clamp single-line text
+function clean_input($data, $maxLen = 120) {
     if (is_null($data)) return '';
     $data = trim($data);
     $data = stripslashes($data);
     $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
-    // Remove header injection line breaks
-    return str_replace(array("\r", "\n"), ' ', $data);
+    // Remove header injection line breaks and null bytes
+    $data = str_replace(array("\r", "\n", "\0", "%0a", "%0d"), ' ', $data);
+    return mb_substr($data, 0, $maxLen, 'UTF-8');
 }
 
-// Helper to sanitize multi-line text
-function clean_textarea($data) {
+// Helper to sanitize and clamp multi-line text
+function clean_textarea($data, $maxLen = 3000) {
     if (is_null($data)) return '';
     $data = trim($data);
     $data = stripslashes($data);
-    return htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+    $data = htmlspecialchars($data, ENT_QUOTES, 'UTF-8');
+    return mb_substr($data, 0, $maxLen, 'UTF-8');
 }
 
 // 1. Determine Mapped Recipient Email dynamically from POST
+$defaultMappedEmail = 'shiven.k@aol.in';
 $recipient = $defaultMappedEmail;
 if (!empty($_POST['to_email']) && filter_var(trim($_POST['to_email']), FILTER_VALIDATE_EMAIL)) {
     $recipient = trim($_POST['to_email']);

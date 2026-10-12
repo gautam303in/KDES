@@ -42,4 +42,15 @@ if (!fs.existsSync(path.join(distDir, 'index.html')) && fs.existsSync(path.join(
   console.log(`[OK] Copied root index.html to dist/`);
 }
 
+// Verify security files are present in dist/
+const securityFiles = ['.htaccess', 'robots.txt'];
+for (const secFile of securityFiles) {
+  const srcSec = path.join(srcDir, secFile);
+  const destSec = path.join(distDir, secFile);
+  if (fs.existsSync(srcSec) && !fs.existsSync(destSec)) {
+    fs.copyFileSync(srcSec, destSec);
+    console.log(`[OK] Copied ${secFile} to dist/`);
+  }
+}
+
 console.log('Build completed successfully.');
