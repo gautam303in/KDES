@@ -24,9 +24,12 @@ const MIME_TYPES = {
 
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
+  if (reqPath.startsWith('/kdes.in')) {
+    reqPath = reqPath.replace(/^\/kdes\.in/, '') || '/';
+  }
 
   // Handle POST submission to sendmail.php in local dev server
-  if (req.method === 'POST' && (reqPath === '/sendmail.php' || reqPath === 'sendmail.php')) {
+  if (req.method === 'POST' && (reqPath === '/sendmail.php' || reqPath === 'sendmail.php' || reqPath.endsWith('sendmail.php'))) {
     let body = '';
     req.on('data', chunk => { body += chunk; });
     req.on('end', () => {
