@@ -10,6 +10,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
+  color-scheme: light;
   /* Aeline Color Tokens - Refined Eco-Tech Laboratory Palette */
   --ae-forest-dark: #0c2619;
   --ae-forest: #164e33;
@@ -1952,6 +1953,7 @@ select:focus {
    Dark Mode Theme Overrides ([data-theme="dark"])
    ========================================================================== */
 [data-theme="dark"] {
+  color-scheme: dark;
   /* Dark Mode Tokens - Deep Forest Midnight Palette */
   --ae-forest-dark: #04140b;
   --ae-forest: #34d399;
