@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build distribution
+dist/
+
+# Temporary scraper cache & logs
+hts-cache/
+hts-log.txt
+*.log
+
+# System & Editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.bak

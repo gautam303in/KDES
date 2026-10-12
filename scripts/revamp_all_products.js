@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const kdesDir = path.join(__dirname, '..', 'kdes.in');
-const rawDir = path.join(__dirname, 'orig_raw');
 
 // Mapping of pro_id from original URLs to the scraped HTML files
 const proIdToDetailFile = {
