@@ -1387,10 +1387,11 @@ img {
 
 .quote-form-card input,
 .quote-form-card textarea,
-.quote-form-card select {
+.quote-form-card select,
+select.ae-form-select {
   width: 100%;
   padding: 12px 18px;
-  background: #fcfdfc;
+  background-color: #fcfdfc;
   border: 1px solid var(--ae-border);
   border-radius: var(--ae-radius-sm);
   font-family: var(--ae-ff-body);
@@ -1400,40 +1401,55 @@ img {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.quote-form-card select {
+.quote-form-card select,
+select.ae-form-select,
+select {
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f241a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 16px center;
-  background-size: 16px;
-  padding-right: 44px;
+  background-color: #ffffff !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%230f241a' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  background-size: 16px 16px !important;
+  padding-right: 44px !important;
   cursor: pointer;
 }
 
-.quote-form-card select optgroup {
+.quote-form-card select optgroup,
+select optgroup {
   font-family: var(--ae-ff-heading);
   font-weight: 700;
   color: var(--ae-forest);
-  background: #f0fdf4;
-  padding: 6px 0;
+  background-color: #f0fdf4 !important;
+  padding: 8px 12px;
 }
 
-.quote-form-card select option {
+.quote-form-card select option,
+select option {
   font-family: var(--ae-ff-body);
   font-weight: 500;
   color: #1e293b;
-  background: #ffffff;
+  background-color: #ffffff !important;
   padding: 8px 14px;
 }
 
 .quote-form-card input:focus,
-.quote-form-card textarea:focus,
-.quote-form-card select:focus {
+.quote-form-card textarea:focus {
   border-color: var(--ae-forest);
-  background: #ffffff;
+  background-color: #ffffff;
   box-shadow: 0 0 0 3px rgba(45, 195, 8, 0.12);
+}
+
+.quote-form-card select:focus,
+select.ae-form-select:focus,
+select:focus {
+  border-color: var(--ae-forest) !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 3px rgba(45, 195, 8, 0.12) !important;
+  background-repeat: no-repeat !important;
+  background-position: right 16px center !important;
+  background-size: 16px 16px !important;
 }
 
 /* ==========================================================================
