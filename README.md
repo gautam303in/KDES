@@ -108,7 +108,7 @@ The website catalogs 25 precision models across 8 core categories:
 - **Registered Address**: A-158, Street no.8, Meet Nagar, Delhi: 110094
 - **Office Address**: 185/30-B, Krishna Gali No.-6, Adarsh Mohalla, Maujpur, Delhi 110053
 - **General Inquiries**: [kdes2017@gmail.com](mailto:kdes2017@gmail.com)
-- **Enquiry Routing**: [shiven.k@aol.in](mailto:shiven.k@aol.in)
+- **Enquiry Routing**: [kdes2017@gmail.com](mailto:kdes2017@gmail.com)
 - **Phone**: [+91-9555498906](tel:+919555498906) &bull; **WhatsApp Desk**: [+91 95820 43336](https://wa.me/919582043336)
 
 ---
