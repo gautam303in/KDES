@@ -9,6 +9,8 @@ dist/
 hts-cache/
 hts-log.txt
 *.log
+inquiries_backup.json
+kdes.in/inquiries_backup.json
 
 # System & Editor files
 .DS_Store

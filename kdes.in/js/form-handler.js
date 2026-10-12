@@ -68,8 +68,9 @@
                         return { status: 'success' };
                     });
                 })
-                .then(function () {
-                    showSuccessModal(fullName, product, email, phone);
+                .then(function (data) {
+                    var mappedTo = (data && data.recipient) ? data.recipient : TARGET_EMAIL;
+                    showSuccessModal(fullName, product, email, phone, mappedTo);
                     form.reset();
                     if (submitBtn) {
                         submitBtn.disabled = false;
@@ -78,7 +79,7 @@
                 })
                 .catch(function () {
                     // Fallback: If PHP backend is unreachable (e.g. offline or static server),
-                    // allow opening mailto directly to kdes2017@gmail.com
+                    // allow opening mailto directly to mapped target email
                     var mailtoSubject = encodeURIComponent('[' + formType + '] ' + product + ' - ' + fullName);
                     var mailtoBody = encodeURIComponent(
                         'Full Name: ' + fullName + '\n' +
@@ -101,10 +102,11 @@
         });
     });
 
-    function showSuccessModal(name, product, email, phone) {
+    function showSuccessModal(name, product, email, phone, targetEmail) {
         var existing = document.getElementById('kdesSuccessModal');
         if (existing) existing.remove();
 
+        var displayRecipient = targetEmail || TARGET_EMAIL;
         var modal = document.createElement('div');
         modal.id = 'kdesSuccessModal';
         modal.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(8,19,13,0.85);backdrop-filter:blur(6px);z-index:999999;display:flex;align-items:center;justify-content:center;padding:20px;animation:kdesFadeIn 0.3s ease;';
@@ -114,12 +116,12 @@
                 '<div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#70e000,#38b000);display:inline-flex;align-items:center;justify-content:center;font-size:32px;color:#0e2618;margin-bottom:18px;box-shadow:0 8px 20px rgba(112,224,0,0.35);">' +
                     '<i class="fas fa-check"></i>' +
                 '</div>' +
-                '<h2 style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:24px;font-weight:800;color:#0e2618;margin:0 0 10px 0;">Details Sent Successfully!</h2>' +
+                '<h2 style="font-family:\'Plus Jakarta Sans\',sans-serif;font-size:24px;font-weight:800;color:#0e2618;margin:0 0 10px 0;">Details Forwarded Successfully!</h2>' +
                 '<p style="font-size:15px;color:#4b5563;line-height:1.6;margin-bottom:20px;">' +
-                    'Thank you, <strong>' + escapeHtml(name) + '</strong>. Your specifications for <strong>' + escapeHtml(product) + '</strong> have been forwarded directly to <strong>' + TARGET_EMAIL + '</strong>.' +
+                    'Thank you, <strong>' + escapeHtml(name) + '</strong>. Your specifications for <strong>' + escapeHtml(product) + '</strong> have been forwarded directly to <strong>' + escapeHtml(displayRecipient) + '</strong>.' +
                 '</p>' +
                 '<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px 18px;font-size:13px;text-align:left;color:#334155;margin-bottom:24px;">' +
-                    '<div style="display:flex;justify-content:space-between;margin-bottom:6px;"><strong>Target Recipient:</strong> <span style="color:#15803d;font-weight:700;">' + TARGET_EMAIL + '</span></div>' +
+                    '<div style="display:flex;justify-content:space-between;margin-bottom:6px;"><strong>Mapped Recipient:</strong> <span style="color:#15803d;font-weight:700;">' + escapeHtml(displayRecipient) + '</span></div>' +
                     '<div style="display:flex;justify-content:space-between;margin-bottom:6px;"><strong>Customer Email:</strong> <span>' + escapeHtml(email || 'Provided') + '</span></div>' +
                     '<div style="display:flex;justify-content:space-between;"><strong>Contact Phone:</strong> <span>' + escapeHtml(phone || 'Provided') + '</span></div>' +
                 '</div>' +
